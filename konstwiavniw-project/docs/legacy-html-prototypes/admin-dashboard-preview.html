@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konstwiavniw — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-900: #0A1730; --navy-800: #0F2247; --navy-700: #16305F;
+    --white: #FFFFFF; --offwhite: #F6F7FA; --ink: #1B2333; --muted: #5B6472; --line: #E4E7EE;
+    --gold-500: #C9A227; --gold-400: #D8B84A; --gold-300: #E3C766;
+    --gold-gradient: linear-gradient(135deg, #E3C766 0%, #C9A227 60%, #9C7A16 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
+    --radius-md: 14px; --radius-lg: 22px;
+    --shadow-card: 0 8px 30px rgba(10,23,48,.08);
+    --shadow-card-hover: 0 16px 40px rgba(10,23,48,.14);
+    --red: #C0392B; --green: #2E7D4F;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: var(--font-body); color: var(--ink); background: var(--offwhite); }
+  a { text-decoration:none; color:inherit; }
+  button { font-family: var(--font-body); cursor:pointer; }
+
+  .layout { display:grid; grid-template-columns: 240px 1fr; min-height:100vh; }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar { background: var(--navy-900); color:#fff; padding: 28px 20px; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; }
+  .logo-row { display:flex; align-items:center; gap:10px; margin-bottom: 8px; }
+  .logo-mark { width:26px; height:22px; flex-shrink:0; }
+  .logo-word { font-family: var(--font-display); font-weight:600; font-size:1.02rem; }
+  .logo-word b { color: var(--gold-400); }
+  .admin-tag { font-family: var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color: var(--gold-300); margin: 0 0 34px 2px; display:block; }
+
+  .nav-list { display:flex; flex-direction:column; gap:4px; }
+  .nav-item { display:flex; align-items:center; gap:12px; padding: 11px 14px; border-radius: var(--radius-md); font-size:.9rem; font-weight:500; color:#B9C2D6; border:none; background:none; width:100%; text-align:left; }
+  .nav-item .ic { width:18px; text-align:center; }
+  .nav-item.active { background: rgba(255,255,255,.08); color:#fff; }
+  .nav-item.active .ic { color: var(--gold-400); }
+
+  .sidebar-foot { margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,.1); }
+  .user-mini { display:flex; align-items:center; gap:10px; }
+  .avatar { width:34px; height:34px; border-radius:50%; background: var(--gold-gradient); display:flex; align-items:center; justify-content:center; font-family: var(--font-display); font-weight:600; color: var(--navy-900); flex-shrink:0; font-size:.85rem; }
+  .user-mini .name { font-size:.85rem; font-weight:600; color:#fff; }
+  .user-mini .role { font-size:.72rem; color:#8A95B3; }
+
+  /* ---------- MAIN ---------- */
+  .main { padding: 32px 36px 60px; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom: 30px; flex-wrap:wrap; gap:14px;}
+  .greeting-eyebrow { font-family: var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color: var(--gold-500); display:block; margin-bottom:6px; }
+  h1.greeting { font-family: var(--font-display); font-weight:500; font-size: clamp(1.5rem, 3vw, 2rem); margin:0; color: var(--navy-900); }
+  .hamburger { display:none; background:none; border:none; font-size:1.4rem; color: var(--navy-900); }
+
+  .btn { font-weight:600; font-size:.85rem; border:none; border-radius:999px; padding:11px 20px; display:inline-flex; align-items:center; gap:8px; }
+  .btn-primary { background: var(--gold-gradient); color: var(--navy-900); box-shadow: 0 8px 20px rgba(201,162,39,.3); }
+  .btn-outline { background:#fff; color: var(--navy-800); border:1.5px solid var(--line); }
+  .btn-sm { padding:7px 14px; font-size:.78rem; }
+  .btn-danger-ghost { background:none; color: var(--red); border:none; font-size:.78rem; font-weight:600; }
+
+  /* ---------- STATS ---------- */
+  .summary-row { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:16px; margin-bottom: 40px; }
+  .summary-card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 20px 22px; display:flex; flex-direction:column; gap:6px; }
+  .summary-card .label { font-size:.78rem; color: var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .summary-card .value { font-family: var(--font-display); font-size:1.7rem; color: var(--navy-900); }
+  .summary-card .value span { font-family: var(--font-mono); font-size:.95rem; color: var(--gold-500); }
+
+  .section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:12px; }
+  h2 { font-family: var(--font-display); font-weight:500; font-size:1.3rem; margin:0; color: var(--navy-900); }
+  section { margin-bottom: 46px; }
+
+  /* ---------- TAB VIEWS ---------- */
+  .view { display:none; }
+  .view.active { display:block; }
+
+  /* ---------- TABLE ---------- */
+  .table-card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow:hidden; }
+  table { width:100%; border-collapse:collapse; }
+  thead th { text-align:left; font-family: var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color: var(--muted); padding: 14px 20px; border-bottom:1px solid var(--line); }
+  tbody td { padding: 14px 20px; border-bottom:1px solid var(--line); font-size:.86rem; }
+  tbody tr:last-child td { border-bottom:none; }
+  .cell-name { font-weight:600; color: var(--ink); }
+  .cell-sub { font-size:.76rem; color: var(--muted); }
+  .pill { font-family: var(--font-mono); font-size:.7rem; padding:4px 10px; border-radius:999px; }
+  .pill.gold { background: rgba(201,162,39,.12); color: var(--gold-500); }
+  .pill.green { background: rgba(46,125,79,.1); color: var(--green); }
+  .mini-progress { width:80px; height:5px; background: var(--line); border-radius:999px; overflow:hidden; display:inline-block; vertical-align:middle; margin-right:8px; }
+  .mini-progress span { display:block; height:100%; background: var(--gold-gradient); }
+  .table-scroll { overflow-x:auto; }
+
+  /* ---------- KOU MANAGEMENT ---------- */
+  .course-manage-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:18px; }
+  .course-manage-card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow:hidden; }
+  .cm-top { height:74px; background: var(--navy-800); display:flex; align-items:center; justify-content:space-between; padding:0 18px; position:relative; }
+  .cm-top::after { content:""; position:absolute; bottom:0; left:0; right:0; height:3px; background: var(--gold-gradient); }
+  .cm-top .ic { font-size:1.5rem; }
+  .cm-actions { display:flex; gap:8px; }
+  .icon-btn { width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,.12); border:none; color:#fff; font-size:.8rem; }
+  .cm-body { padding: 16px 18px 18px; }
+  .cm-badge { font-family: var(--font-mono); font-size:.66rem; color: var(--gold-500); text-transform:uppercase; letter-spacing:.06em; }
+  .cm-body h3 { font-family: var(--font-display); font-size:1rem; font-weight:600; margin:6px 0 10px; }
+  .cm-meta-row { display:flex; gap:16px; font-size:.76rem; color: var(--muted); margin-bottom:12px; }
+  .cm-meta-row b { color: var(--ink); }
+
+  .accordion { border-top:1px solid var(--line); }
+  .acc-item { border-bottom:1px solid var(--line); }
+  .acc-head { display:flex; justify-content:space-between; align-items:center; padding:10px 4px; cursor:pointer; font-size:.82rem; font-weight:600; }
+  .acc-head .plus { color: var(--gold-500); font-family: var(--font-mono); transition:.2s; }
+  .acc-item[open] .plus { transform: rotate(45deg); display:inline-block; }
+  .acc-body { padding: 0 4px 12px; }
+  .lesson-mini { display:flex; align-items:center; gap:10px; padding:7px 0; font-size:.8rem; color: var(--muted); }
+  .lesson-mini .tag { font-family: var(--font-mono); font-size:.65rem; padding:2px 8px; border-radius:999px; background: var(--offwhite); }
+  .add-line { display:flex; gap:8px; margin-top:8px; }
+  .add-line button { font-size:.74rem; padding:6px 12px; border-radius:999px; border:1px dashed var(--line); background:none; color: var(--muted); }
+  summary::-webkit-details-marker{ display:none; }
+
+  /* ---------- FORM: nouvo kou ---------- */
+  .form-card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 24px 26px; }
+  .form-grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  .field { margin-bottom:16px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { display:block; font-size:.8rem; font-weight:600; color: var(--navy-900); margin-bottom:6px; }
+  .field input, .field textarea, .field select { width:100%; padding:11px 13px; border-radius: var(--radius-md); border:1.5px solid var(--line); font-family: var(--font-body); font-size:.9rem; }
+  .field input:focus, .field textarea:focus { outline:none; border-color: var(--gold-500); }
+  .upload-box { border:1.5px dashed var(--line); border-radius: var(--radius-md); padding: 18px; text-align:center; color: var(--muted); font-size:.82rem; }
+  .upload-box b { color: var(--gold-500); }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: fixed; left:0; top:0; bottom:0; width: 230px; z-index: 100; transform: translateX(-100%); transition: transform .25s ease; }
+    .sidebar.open { transform: translateX(0); box-shadow: 20px 0 40px rgba(0,0,0,.2); }
+    .hamburger { display:inline-block; }
+    .main { padding: 22px 18px 60px; }
+    .form-grid { grid-template-columns: 1fr; }
+    table { min-width: 560px; }
+  }
+  .overlay { display:none; position:fixed; inset:0; background:rgba(10,23,48,.4); z-index:90; }
+  .overlay.show { display:block; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo-row">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="24" width="9" height="10" rx="2" fill="#E3C766"/>
+        <rect x="11" y="16" width="9" height="18" rx="2" fill="#D8B84A"/>
+        <rect x="22" y="8" width="9" height="26" rx="2" fill="#C9A227"/>
+        <rect x="33" y="0" width="7" height="34" rx="2" fill="#9C7A16"/>
+      </svg>
+      <span class="logo-word">KONSTWI<b>AVNIW</b></span>
+    </div>
+    <span class="admin-tag">Espas Admin</span>
+
+    <nav class="nav-list">
+      <button class="nav-item active" data-view="overview"><span class="ic">▦</span> Vin Jeneral</button>
+      <button class="nav-item" data-view="students"><span class="ic">🎓</span> Elèv</button>
+      <button class="nav-item" data-view="courses"><span class="ic">📚</span> Kou & Modil</button>
+      <button class="nav-item" data-view="newcourse"><span class="ic">➕</span> Nouvo Kou</button>
+      <button class="nav-item" data-view="resources"><span class="ic">📁</span> Resous</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-mini">
+        <div class="avatar">AD</div>
+        <div><div class="name">Admin Konstwiavniw</div><div class="role">Kont Admin</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <span class="greeting-eyebrow" id="view-eyebrow">Dashboard Admin</span>
+        <h1 class="greeting" id="view-title">Vin Jeneral</h1>
+      </div>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+
+    <!-- VUE: JENERAL -->
+    <div class="view active" id="view-overview">
+      <div class="summary-row">
+        <div class="summary-card"><span class="label">Total Elèv</span><span class="value">248</span></div>
+        <div class="summary-card"><span class="label">Kou Piblye</span><span class="value">10</span></div>
+        <div class="summary-card"><span class="label">Pwogrè Mwayèn</span><span class="value">54<span>%</span></span></div>
+        <div class="summary-card"><span class="label">Leson Total</span><span class="value">86</span></div>
+      </div>
+
+      <section>
+        <div class="section-head"><h2>Dènye Enskripsyon</h2></div>
+        <div class="table-card table-scroll">
+          <table>
+            <thead><tr><th>Elèv</th><th>Kou</th><th>Dat</th><th>Pwogrè</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-name">Marie Joseph</td><td>Canva pou Kreyatè</td><td class="cell-sub">21 Out 2026</td><td><span class="mini-progress"><span style="width:72%"></span></span>72%</td></tr>
+              <tr><td class="cell-name">Jean Baptiste</td><td>TikTok Shop</td><td class="cell-sub">20 Out 2026</td><td><span class="mini-progress"><span style="width:15%"></span></span>15%</td></tr>
+              <tr><td class="cell-name">Nadège Pierre</td><td>ChatGPT & IA</td><td class="cell-sub">19 Out 2026</td><td><span class="mini-progress"><span style="width:40%"></span></span>40%</td></tr>
+              <tr><td class="cell-name">Wilkens Fleuriot</td><td>Meta Ads</td><td class="cell-sub">18 Out 2026</td><td><span class="mini-progress"><span style="width:5%"></span></span>5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- VUE: ELÈV -->
+    <div class="view" id="view-students">
+      <div class="section-head">
+        <h2>Lis Elèv yo</h2>
+      </div>
+      <div class="table-card table-scroll">
+        <table>
+          <thead><tr><th>Non</th><th>Imèl</th><th>Kou Enskri</th><th>Pwogrè</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="cell-name">Marie Joseph</td><td class="cell-sub">marie.joseph@mail.com</td>
+              <td>3 kou</td><td><span class="pill gold">72% mwayèn</span></td><td><button class="btn btn-outline btn-sm">Wè</button></td>
+            </tr>
+            <tr>
+              <td class="cell-name">Jean Baptiste</td><td class="cell-sub">jean.b@mail.com</td>
+              <td>1 kou</td><td><span class="pill gold">15% mwayèn</span></td><td><button class="btn btn-outline btn-sm">Wè</button></td>
+            </tr>
+            <tr>
+              <td class="cell-name">Nadège Pierre</td><td class="cell-sub">nadege.p@mail.com</td>
+              <td>2 kou</td><td><span class="pill green">40% mwayèn</span></td><td><button class="btn btn-outline btn-sm">Wè</button></td>
+            </tr>
+            <tr>
+              <td class="cell-name">Wilkens Fleuriot</td><td class="cell-sub">w.fleuriot@mail.com</td>
+              <td>4 kou</td><td><span class="pill gold">5% mwayèn</span></td><td><button class="btn btn-outline btn-sm">Wè</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VUE: KOU & MODIL -->
+    <div class="view" id="view-courses">
+      <div class="section-head">
+        <h2>Jere Kou yo</h2>
+        <button class="btn btn-primary btn-sm" data-goto="newcourse">➕ Nouvo Kou</button>
+      </div>
+      <div class="course-manage-grid">
+
+        <div class="course-manage-card">
+          <div class="cm-top"><span class="ic">🎨</span>
+            <div class="cm-actions"><button class="icon-btn">✎</button><button class="icon-btn">🗑</button></div>
+          </div>
+          <div class="cm-body">
+            <span class="cm-badge">Design</span>
+            <h3>Canva pou Kreyatè</h3>
+            <div class="cm-meta-row"><span><b>6</b> modil</span><span><b>18</b> leson</span><span><b>84</b> elèv</span></div>
+            <div class="accordion">
+              <details class="acc-item" open>
+                <summary class="acc-head">Modil 1 — Entwodiksyon <span class="plus">+</span></summary>
+                <div class="acc-body">
+                  <div class="lesson-mini"><span class="tag">🎬</span> Kisa Canva ye?</div>
+                  <div class="lesson-mini"><span class="tag">📄</span> Gid demaraj (PDF)</div>
+                  <div class="add-line">
+                    <button>+ Ajoute Leson</button><button>+ Videyo</button><button>+ PDF</button>
+                  </div>
+                </div>
+              </details>
+              <details class="acc-item">
+                <summary class="acc-head">Modil 2 — Premye Design <span class="plus">+</span></summary>
+                <div class="acc-body">
+                  <div class="lesson-mini"><span class="tag">🎬</span> Kreye yon post Instagram</div>
+                  <div class="add-line"><button>+ Ajoute Leson</button></div>
+                </div>
+              </details>
+            </div>
+            <div class="add-line" style="margin-top:12px;"><button>+ Ajoute Modil</button></div>
+          </div>
+        </div>
+
+        <div class="course-manage-card">
+          <div class="cm-top"><span class="ic">🤖</span>
+            <div class="cm-actions"><button class="icon-btn">✎</button><button class="icon-btn">🗑</button></div>
+          </div>
+          <div class="cm-body">
+            <span class="cm-badge">IA</span>
+            <h3>ChatGPT & Entèlijans Atifisyèl</h3>
+            <div class="cm-meta-row"><span><b>5</b> modil</span><span><b>14</b> leson</span><span><b>63</b> elèv</span></div>
+            <div class="accordion">
+              <details class="acc-item">
+                <summary class="acc-head">Modil 1 — Baz ChatGPT <span class="plus">+</span></summary>
+                <div class="acc-body">
+                  <div class="lesson-mini"><span class="tag">🎬</span> Kreye premye "prompt" ou</div>
+                  <div class="add-line"><button>+ Ajoute Leson</button></div>
+                </div>
+              </details>
+            </div>
+            <div class="add-line" style="margin-top:12px;"><button>+ Ajoute Modil</button></div>
+          </div>
+        </div>
+
+        <div class="course-manage-card">
+          <div class="cm-top"><span class="ic">🛒</span>
+            <div class="cm-actions"><button class="icon-btn">✎</button><button class="icon-btn">🗑</button></div>
+          </div>
+          <div class="cm-body">
+            <span class="cm-badge">Monetizasyon</span>
+            <h3>TikTok Shop</h3>
+            <div class="cm-meta-row"><span><b>4</b> modil</span><span><b>11</b> leson</span><span><b>101</b> elèv</span></div>
+            <div class="accordion">
+              <details class="acc-item">
+                <summary class="acc-head">Modil 1 — Louvri Magazen an <span class="plus">+</span></summary>
+                <div class="acc-body">
+                  <div class="lesson-mini"><span class="tag">🎬</span> Kreye kont TikTok Shop</div>
+                  <div class="add-line"><button>+ Ajoute Leson</button></div>
+                </div>
+              </details>
+            </div>
+            <div class="add-line" style="margin-top:12px;"><button>+ Ajoute Modil</button></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VUE: NOUVO KOU -->
+    <div class="view" id="view-newcourse">
+      <div class="section-head"><h2>Kreye Nouvo Kou</h2></div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Tit Kou a</label>
+            <input type="text" placeholder="Egzanp: Monetizasyon Canva">
+          </div>
+          <div class="field full">
+            <label>Deskripsyon</label>
+            <textarea rows="3" placeholder="Kout deskripsyon sou sa kou a montre..."></textarea>
+          </div>
+          <div class="field">
+            <label>Kategori</label>
+            <select><option>Design</option><option>IA</option><option>Videyo</option><option>Monetizasyon</option><option>Piblisite</option></select>
+          </div>
+          <div class="field">
+            <label>Ikòn / Miniyati</label>
+            <input type="text" placeholder="🎨 (emoji oswa imaj pita)">
+          </div>
+          <div class="field full">
+            <label>Premye modil ak videyo/resous</label>
+            <div class="upload-box">📤 Glise videyo oswa PDF isit, oswa <b>chwazi fichye</b></div>
+          </div>
+        </div>
+        <button class="btn btn-primary">Kreye Kou a</button>
+      </div>
+    </div>
+
+    <!-- VUE: RESOUS -->
+    <div class="view" id="view-resources">
+      <div class="section-head"><h2>Tout Resous yo</h2></div>
+      <div class="table-card table-scroll">
+        <table>
+          <thead><tr><th>Fichye</th><th>Kou</th><th>Tip</th><th>Tay</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="cell-name">Gid Canva</td><td>Canva pou Kreyatè</td><td><span class="pill gold">PDF</span></td><td class="cell-sub">2.4 MB</td><td><button class="btn-danger-ghost">Efase</button></td></tr>
+            <tr><td class="cell-name">Modèl Rezo Sosyal</td><td>Canva pou Kreyatè</td><td><span class="pill gold">ZIP</span></td><td class="cell-sub">14 MB</td><td><button class="btn-danger-ghost">Efase</button></td></tr>
+            <tr><td class="cell-name">Chèklis Piblikasyon TikTok</td><td>TikTok Shop</td><td><span class="pill gold">PDF</span></td><td class="cell-sub">180 KB</td><td><button class="btn-danger-ghost">Efase</button></td></tr>
+            <tr><td class="cell-name">Videyo — Kreye Prompt</td><td>ChatGPT & IA</td><td><span class="pill green">MP4</span></td><td class="cell-sub">86 MB</td><td><button class="btn-danger-ghost">Efase</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const hamburger = document.getElementById("hamburger");
+  function toggleSidebar() { sidebar.classList.toggle("open"); overlay.classList.toggle("show"); }
+  hamburger.addEventListener("click", toggleSidebar);
+  overlay.addEventListener("click", toggleSidebar);
+
+  const titles = {
+    overview: "Vin Jeneral", students: "Jere Elèv", courses: "Jere Kou & Modil",
+    newcourse: "Kreye Nouvo Kou", resources: "Jere Resous"
+  };
+
+  function showView(key) {
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.getElementById("view-" + key).classList.add("active");
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.view === key));
+    document.getElementById("view-title").textContent = titles[key];
+    if (window.innerWidth <= 900) toggleSidebar();
+  }
+
+  document.querySelectorAll(".nav-item").forEach(btn => {
+    btn.addEventListener("click", () => showView(btn.dataset.view));
+  });
+  document.querySelectorAll("[data-goto]").forEach(btn => {
+    btn.addEventListener("click", () => showView(btn.dataset.goto));
+  });
+</script>
+
+</body>
+</html>
