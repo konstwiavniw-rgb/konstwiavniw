@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konstwiavniw — Aprann • Kreye • Devlope • Reyisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-900: #0A1730;
+    --navy-800: #0F2247;
+    --navy-700: #16305F;
+    --navy-600: #24417a;
+    --white: #FFFFFF;
+    --offwhite: #F6F7FA;
+    --ink: #1B2333;
+    --muted: #5B6472;
+    --line: #E4E7EE;
+    --gold-500: #C9A227;
+    --gold-400: #D8B84A;
+    --gold-300: #E3C766;
+    --gold-gradient: linear-gradient(135deg, #E3C766 0%, #C9A227 60%, #9C7A16 100%);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 24px;
+    --shadow-card: 0 8px 30px rgba(10,23,48,.08);
+    --shadow-card-hover: 0 16px 40px rgba(10,23,48,.14);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--white); color: var(--ink);
+    font-family: var(--font-body); line-height: 1.55;
+  }
+  a { text-decoration:none; color:inherit; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+  .section-label {
+    font-family: var(--font-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold-500); margin-bottom: 12px; display:inline-block;
+  }
+  h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem,3vw,2.1rem); margin: 0 0 14px; color: var(--navy-900); }
+  .lead { color: var(--muted); max-width: 560px; font-size: 1rem; margin: 0 0 40px; }
+  .btn {
+    font-family: var(--font-body); font-weight: 600; font-size: .92rem;
+    padding: 13px 26px; border-radius: 999px; border: none; cursor: pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary { background: var(--gold-gradient); color: var(--navy-900); box-shadow: 0 8px 20px rgba(201,162,39,.35); }
+  .btn-outline-light { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.4); }
+  .btn-outline { background: transparent; color: var(--navy-800); border: 1.5px solid var(--line); }
+
+  /* ---------- NAVBAR ---------- */
+  .nav-mock {
+    position: sticky; top:0; z-index: 50;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+  }
+  .nav-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 30px; height: 26px; flex-shrink:0; }
+  .logo-word { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--navy-900); }
+  .logo-word b { color: var(--gold-500); font-weight: 600; }
+  .nav-links { display:flex; gap: 24px; font-size:.9rem; color: var(--muted); font-weight:500; }
+  .nav-links a:hover { color: var(--navy-900); }
+  .nav-cta { display:flex; gap:10px; align-items:center; }
+  .btn-ghost { font-size:.88rem; font-weight:600; color:var(--navy-800); padding:8px 6px; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    background: var(--navy-900); color: var(--white);
+    padding: 70px 0 90px; position: relative; overflow:hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(650px 320px at 88% 0%, rgba(201,162,39,.18), transparent 70%);
+  }
+  .hero-inner { position: relative; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--gold-300); margin-bottom: 16px; display:block;
+  }
+  h1.hero-title {
+    font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 4.6vw, 3.3rem);
+    margin: 0 0 18px; max-width: 760px; line-height: 1.14;
+  }
+  h1.hero-title em { color: var(--gold-400); font-style: italic; font-weight: 500; }
+  .hero-sub { color: #C7CEDE; max-width: 540px; font-size: 1.08rem; margin-bottom: 32px; }
+  .hero-row { display:flex; gap:16px; flex-wrap:wrap; }
+  .hero-note { margin-top:16px; font-size:.85rem; color:#9AA6C0; }
+
+  .steps { display: flex; gap: 0; margin-top: 46px; flex-wrap: wrap; border-top:1px solid rgba(255,255,255,.12); padding-top: 30px;}
+  .step { flex: 1 1 140px; padding: 0 20px; border-left: 2px solid rgba(255,255,255,.12); }
+  .step:first-child { border-left: none; padding-left:0; }
+  .step .num { font-family: var(--font-mono); font-size: .8rem; color: var(--gold-300); display:block; margin-bottom: 6px; }
+  .step .label { font-family: var(--font-display); font-size: 1.05rem; color: var(--white); }
+
+  /* ---------- SECTIONS ---------- */
+  section.pad { padding: 78px 0; }
+  .bg-off { background: var(--offwhite); }
+  .center { text-align:center; margin-left:auto; margin-right:auto; }
+
+  /* ---------- COURSES ---------- */
+  .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 18px; }
+  .card {
+    background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+    overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; border:1px solid var(--line);
+  }
+  .card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-3px); }
+  .card-top {
+    height: 92px; background: var(--navy-800);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.8rem; position: relative;
+  }
+  .card-top::after { content:""; position:absolute; bottom:0; left:0; right:0; height:3px; background: var(--gold-gradient); }
+  .card-body { padding: 18px 20px 22px; }
+  .badge { font-family: var(--font-mono); font-size: .68rem; color: var(--gold-500); text-transform:uppercase; letter-spacing:.06em; }
+  .card-body h3 { font-family: var(--font-display); font-size: 1.05rem; margin: 6px 0 8px; color: var(--ink); font-weight:600; }
+  .card-body p { font-size: .86rem; color: var(--muted); margin: 0; }
+
+  /* ---------- POUKISA ---------- */
+  .why-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 28px; margin-top: 10px;}
+  .why-item .why-num { font-family: var(--font-mono); font-size:.8rem; color:var(--gold-500); margin-bottom:10px; display:block; }
+  .why-item h3 { font-family: var(--font-display); font-size:1.15rem; font-weight:600; margin:0 0 8px; color:var(--navy-900); }
+  .why-item p { font-size:.9rem; color:var(--muted); margin:0; }
+
+  /* ---------- FAQ ---------- */
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-q {
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    padding: 22px 4px; cursor:pointer; font-family: var(--font-display); font-weight:500; font-size:1.02rem; color:var(--navy-900);
+  }
+  .faq-q .plus { font-family: var(--font-mono); color: var(--gold-500); font-size:1.2rem; transition: transform .2s; flex-shrink:0; }
+  .faq-item[open] .faq-q .plus { transform: rotate(45deg); }
+  .faq-a { padding: 0 4px 22px; color: var(--muted); font-size: .92rem; max-width: 640px; }
+  summary::-webkit-details-marker { display:none; }
+
+  /* ---------- CTA STRIP ---------- */
+  .cta-strip {
+    background: var(--navy-800); color:#fff; border-radius: var(--radius-lg);
+    padding: 46px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    position:relative; overflow:hidden;
+  }
+  .cta-strip::after { content:""; position:absolute; inset:0; background: radial-gradient(500px 200px at 90% 20%, rgba(201,162,39,.22), transparent 70%); }
+  .cta-strip h3 { font-family:var(--font-display); font-weight:500; font-size:1.5rem; margin:0 0 6px; position:relative; }
+  .cta-strip p { color:#C7CEDE; margin:0; position:relative; }
+  .cta-strip .btn { position:relative; }
+
+  /* ---------- FOOTER ---------- */
+  footer { background: var(--navy-900); color:#B9C2D6; padding: 56px 0 28px; }
+  .foot-grid { display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+  .foot-col h4 { font-family: var(--font-body); font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; color:#fff; margin:0 0 16px; font-weight:600; }
+  .foot-col a { display:block; font-size:.88rem; color:#B9C2D6; margin-bottom:10px; }
+  .foot-col a:hover { color:var(--gold-400); }
+  .foot-desc { font-size:.88rem; max-width:280px; color:#9AA6C0; margin-top:14px; }
+  .foot-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.8rem; color:#7D89A6; }
+
+  @media (max-width: 780px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display:none; }
+    .hero { padding: 48px 0 60px; }
+    .steps { flex-direction: column; padding-top:22px; }
+    .step { border-left:none; border-top: 2px solid rgba(255,255,255,.12); padding: 18px 0 0; }
+    .step:first-child { border-top:none; padding-top:0; }
+    section.pad { padding: 54px 0; }
+    .cta-strip { padding: 32px 24px; flex-direction:column; align-items:flex-start; }
+    .foot-grid { grid-template-columns: 1fr; gap:24px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav-mock">
+    <div class="wrap nav-inner">
+      <div class="logo-row">
+        <svg class="logo-mark" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="24" width="9" height="10" rx="2" fill="#E3C766"/>
+          <rect x="11" y="16" width="9" height="18" rx="2" fill="#D8B84A"/>
+          <rect x="22" y="8" width="9" height="26" rx="2" fill="#C9A227"/>
+          <rect x="33" y="0" width="7" height="34" rx="2" fill="#9C7A16"/>
+        </svg>
+        <span class="logo-word">KONSTWI<b>AVNIW</b></span>
+      </div>
+      <div class="nav-links">
+        <a href="#kou">Kou yo</a>
+        <a href="#poukisa">Poukisa nou</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#" class="btn-ghost">Login</a>
+        <button class="btn btn-primary" style="padding:9px 20px; font-size:.85rem;">Kreye kont</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Aprann • Kreye • Devlope • Reyisi</span>
+      <h1 class="hero-title">Konstwi konpetans dijital ou, <em>etap pa etap</em>.</h1>
+      <p class="hero-sub">Konstwiavniw se platfòm ki ede w aprann, kreye, devlope epi monetize yon aktivite sou entènèt — ak fòmasyon pratik nan lang ou, Kreyòl Ayisyen.</p>
+      <div class="hero-row">
+        <button class="btn btn-primary">Kòmanse kounye a →</button>
+        <a href="#kou" class="btn btn-outline-light">Gade fòmasyon yo</a>
+      </div>
+      <p class="hero-note">Pa gen okenn eksperyans teknik ki mande. Kòmanse nan nivo ou.</p>
+
+      <div class="steps">
+        <div class="step"><span class="num">01</span><span class="label">Aprann</span></div>
+        <div class="step"><span class="num">02</span><span class="label">Kreye</span></div>
+        <div class="step"><span class="num">03</span><span class="label">Devlope</span></div>
+        <div class="step"><span class="num">04</span><span class="label">Reyisi</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KOU YO -->
+  <section class="pad" id="kou">
+    <div class="wrap">
+      <span class="section-label">Fòmasyon</span>
+      <h2>Premye kou ki disponib yo</h2>
+      <p class="lead">10 fòmasyon pratik ki pran w soti nan zewo rive nan yon aktivite ki jenere revni.</p>
+      <div class="cards">
+        <div class="card"><div class="card-top">🎨</div><div class="card-body"><span class="badge">Design</span><h3>Canva</h3><p>Kreye kontni vizyèl pwofesyonèl san w pa yon graphist.</p></div></div>
+        <div class="card"><div class="card-top">🤖</div><div class="card-body"><span class="badge">IA</span><h3>ChatGPT</h3><p>Itilize ChatGPT pou ekri, planifye ak akselere travay ou.</p></div></div>
+        <div class="card"><div class="card-top">🧠</div><div class="card-body"><span class="badge">IA</span><h3>Entèlijans Atifisyèl</h3><p>Konprann baz IA a epi aplike l nan aktivite w.</p></div></div>
+        <div class="card"><div class="card-top">🎬</div><div class="card-body"><span class="badge">Videyo</span><h3>CapCut</h3><p>Monte videyo kalite pwofesyonèl ak telefòn ou.</p></div></div>
+        <div class="card"><div class="card-top">🔗</div><div class="card-body"><span class="badge">Kreyatè</span><h3>Beacons</h3><p>Bati yon paj kreyatè pou vann sèvis ak pwodwi ou.</p></div></div>
+        <div class="card"><div class="card-top">👕</div><div class="card-body"><span class="badge">Print on Demand</span><h3>Printify</h3><p>Kreye epi vann pwodwi san w pa gen estòk.</p></div></div>
+        <div class="card"><div class="card-top">📢</div><div class="card-body"><span class="badge">Piblisite</span><h3>Meta Ads</h3><p>Fè piblisite efikas sou Facebook ak Instagram.</p></div></div>
+        <div class="card"><div class="card-top">🛒</div><div class="card-body"><span class="badge">Monetizasyon</span><h3>TikTok Shop</h3><p>Louvri epi jere yon magazen sou TikTok.</p></div></div>
+        <div class="card"><div class="card-top">💰</div><div class="card-body"><span class="badge">Afilyasyon</span><h3>Amazon Affiliate</h3><p>Jenere revni ak lyen afilye Amazon.</p></div></div>
+        <div class="card"><div class="card-top">✨</div><div class="card-body"><span class="badge">Monetizasyon</span><h3>Monetizasyon Canva</h3><p>Transfòme konpetans Canva w an yon vre biznis.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUKISA KONSTWIAVNIW -->
+  <section class="pad bg-off" id="poukisa">
+    <div class="wrap">
+      <span class="section-label">Diferans lan</span>
+      <h2>Poukisa Konstwiavniw?</h2>
+      <p class="lead">Nou pa jis anseye teyori — nou pran w pa lamen jiskaske w gen yon rezilta konkrè.</p>
+      <div class="why-grid">
+        <div class="why-item"><span class="why-num">01</span><h3>100% an Kreyòl</h3><p>Tout kou yo fèt nan lang ou, san barye tradiksyon.</p></div>
+        <div class="why-item"><span class="why-num">02</span><h3>Aprantisaj pratik</h3><p>Chak leson mennen nan yon aksyon konkrè, pa jis teyori.</p></div>
+        <div class="why-item"><span class="why-num">03</span><h3>Chemen konplè</h3><p>Soti nan aprann yon zouti rive nan monetize l.</p></div>
+        <div class="why-item"><span class="why-num">04</span><h3>Aprann nan pwòp rit ou</h3><p>Aksè total sou telefòn, tablet, oswa òdinatè, nenpòt lè.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pad" id="faq">
+    <div class="wrap" style="max-width:760px;">
+      <span class="section-label">Kesyon</span>
+      <h2>Kesyon Moun Poze Souvan</h2>
+      <div style="margin-top:20px;">
+        <details class="faq-item" open>
+          <summary class="faq-q">Èske m bezwen eksperyans teknik pou m kòmanse? <span class="plus">+</span></summary>
+          <div class="faq-a">Non. Kou yo fèt pou moun ki poko gen okenn eksperyans. Nou kòmanse ak baz yo.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Konbyen tan chak kou pran? <span class="plus">+</span></summary>
+          <div class="faq-a">Sa depann de kou a, men pifò fòmasyon yo fèt pou w ka fini yo an kèk semenn, nan pwòp rit ou.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Èske m ka aprann sou telefòn mwen sèlman? <span class="plus">+</span></summary>
+          <div class="faq-a">Wi. Platfòm nan fèt pou fonksyone byen sou telefòn, tablet, ak òdinatè.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Kisa m ap jwenn apre m fin swiv yon kou? <span class="plus">+</span></summary>
+          <div class="faq-a">Resous pou telechaje, ak konpetans konkrè w ka itilize touswit pou kreye oswa devlope yon aktivite sou entènèt.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="pad" style="padding-top:0;">
+    <div class="wrap">
+      <div class="cta-strip">
+        <div><h3>Pare pou w kòmanse konstwi avni ou?</h3><p>Kreye kont ou gratis epi antre nan premye kou a jodi a.</p></div>
+        <button class="btn btn-primary">Kòmanse kounye a →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-col">
+          <div class="logo-row"><span class="logo-word" style="color:#fff;">KONSTWI<b>AVNIW</b></span></div>
+          <p class="foot-desc">Platfòm ki ede w aprann, kreye, devlope epi monetize yon aktivite sou entènèt.</p>
+        </div>
+        <div class="foot-col"><h4>Platfòm</h4><a href="#kou">Kou yo</a><a href="#poukisa">Poukisa nou</a><a href="#faq">FAQ</a></div>
+        <div class="foot-col"><h4>Kont</h4><a href="#">Login</a><a href="#">Kreye kont</a><a href="#">Dashboard</a></div>
+        <div class="foot-col"><h4>Kontak</h4><a href="#">Sipò</a><a href="#">Kondisyon</a><a href="#">Konfidansyalite</a></div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Konstwiavniw. Tout dwa rezève.</span>
+        <span>Aprann • Kreye • Devlope • Reyisi</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

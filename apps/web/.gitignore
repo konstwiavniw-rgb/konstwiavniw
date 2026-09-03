@@ -1,0 +1,16 @@
+# Depandans
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Anviwònman (SEKRE — pa janm push sa sou GitHub)
+.env
+.env.local
+.env*.local
+
+# Divès
+.DS_Store
+*.log
+npm-debug.log*

@@ -1,0 +1,47 @@
+/* ===================================================
+   KONSTWIAVNIW — Design Tokens
+   Sous verite pou tout koulè, polis ak espasman
+   =================================================== */
+
+:root {
+  /* --- Koulè: Ble Fonse (baz) --- */
+  --navy-900: #0A1730; /* background ki pi fonse — hero, footer */
+  --navy-800: #0F2247; /* navy prensipal — header, seksyon fonse */
+  --navy-700: #16305F; /* panno/kad sou fon fonse */
+  --navy-600: #24417a; /* bòdi, ikòn sekondè */
+
+  /* --- Koulè: Blan / Newtral --- */
+  --white: #FFFFFF;
+  --offwhite: #F6F7FA;  /* fon paj klè */
+  --ink: #1B2333;       /* tèks prensipal sou fon klè */
+  --muted: #5B6472;     /* tèks segondè / deskripsyon */
+  --line: #E4E7EE;      /* liy separasyon sou fon klè */
+
+  /* --- Koulè: Ti Touch Lò (aksan) --- */
+  --gold-500: #C9A227; /* lò prensipal — bouton, ikòn, siyati */
+  --gold-400: #D8B84A;
+  --gold-300: #E3C766; /* lò klè — hover, background subtile */
+  --gold-gradient: linear-gradient(135deg, #E3C766 0%, #C9A227 60%, #9C7A16 100%);
+
+  /* --- Polis --- */
+  --font-display: "Fraunces", Georgia, serif;      /* tit, siyati */
+  --font-body: "Inter", system-ui, sans-serif;      /* tèks kouran (sipòte aksan kreyòl) */
+  --font-mono: "IBM Plex Mono", monospace;          /* estatistik, pousantaj, kòd kou */
+
+  /* --- Echèl tipografi --- */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+  --fs-3xl: 3.5rem;
+
+  /* --- Espasman & fòm --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --shadow-card: 0 8px 30px rgba(10, 23, 48, 0.08);
+  --shadow-card-hover: 0 16px 40px rgba(10, 23, 48, 0.14);
+  --container-max: 1160px;
+}
