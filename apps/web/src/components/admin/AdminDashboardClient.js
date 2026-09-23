@@ -127,7 +127,7 @@ export default function AdminDashboardClient({ stats, students, courses, resourc
               </div>
             </div>
           ))}
-          {courses.length === 0 && <p className="lead">Poko gen kou. Ale nan "Kreye Nouvo Kou".</p>}
+          {courses.length === 0 && <p className="lead">Poko gen kou. Ale nan Kreye Nouvo Kou.</p>}
         </div>
       )}
 
@@ -186,3 +186,8 @@ export default function AdminDashboardClient({ stats, students, courses, resourc
     </>
   );
 }
+
+
+
+
+
